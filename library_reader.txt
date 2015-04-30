@@ -1,0 +1,4 @@
+:name, :email, :city, :street, :house
+German% ger@reader.com% Dnepr% Geroev% 21
+Vlad% vlad@reader.com% Dnepr% Stalingrade% 32
+Jeff% jeff@reade.com% Kiev% hello% 21
