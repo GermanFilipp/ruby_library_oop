@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /.bundle/
 /.yardoc
 /Gemfile.lock
@@ -7,3 +8,7 @@
 /pkg/
 /spec/reports/
 /tmp/
+=======
+/.idea/*
+/.idea
+>>>>>>> 51f9b8ad324de8262d58bd7d3d906a08e51b9c1b
