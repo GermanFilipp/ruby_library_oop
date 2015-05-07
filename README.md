@@ -21,8 +21,14 @@ Or install it yourself as:
     $ gem install library
 
 ## Usage
-
-TODO: Write usage instructions here
+library = Library.new
+library.add(Book.new(title:"aaa",author:"bbbb"))
+library.add(Book.new(title:"bbb",author:"ccc"))
+library.get_data_from_file
+library.the_most_popular_reader
+library.the_most_popular_book
+library.num_of_popular_book
+library.save_data
 
 ## Development
 
