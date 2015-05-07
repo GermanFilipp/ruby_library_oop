@@ -9,28 +9,23 @@ module Library
   attr_accessor :books, :orders, :readers, :authors
 
   def initialize ()
-  @books = []
-  @orders = []
+  @books   = []
+  @orders  = []
   @readers = []
   @authors = []
   end
 
-
-
-
-  def add something
-
-    case "#{something.class}"
+  def add obj
+    case "#{obj.class}"
       when "Book"
-        @books.push something
+        @books.push   obj
       when "Order"
-        @orders.push something
+        @orders.push  obj
       when "Reader"
-        @readers.push something
+        @readers.push obj
       when "Author"
-        @authors.push something
+        @authors.push obj
     end
-
   end
 
   def the_most_popular_reader
@@ -42,7 +37,6 @@ module Library
    a = frequencies.select{|k,v| v == frequencies.values.max}
    a.each{|k,v| puts "#{k} often takes the book"}
   end
-
 
   def the_most_popular_book
     array = []
@@ -73,69 +67,54 @@ module Library
   end
 
   def create_if_not_found
-    file_name = ["library_book.txt","library_order.txt","library_reader.txt","library_author.txt"]
-    file_name.each{|name|file?(name) unless File.new(name) }
+     ["library_book.txt","library_order.txt","library_reader.txt","library_author.txt"].each do |name|
+      if puts File.exist?(name) == false
+        File.new(name,"w") #Why don't work?
+       end
+     end
   end
 
   def get_data_from_file
     create_if_not_found
+    ["library_book.txt","library_order.txt","library_reader.txt","library_author.txt"].each do |file_name|
+      file = File.readlines("library_book.txt")
+      file.map! { |f| f.chomp.split('%') }
+      case file_name
+        when "library_book.txt"
+          file.each{|val| add Book.new(title:val[0],author:val[1])}
+        when "library_order.txt"
+          file.each{|val| add Order.new(book:val[0],reader:val[1])}
+        when "library_reader.txt"
+          file.each{|val| add Reader.new(name:val[0],email:val[1],city:val[2],street:val[3],house:val[4])}
+        when "library_author.txt"
+          file.each{|val| add Author.new(name:val[0],biography:val[1])}
+      end
 
-    add_book
-    add_order
-    add_author
-    add_reader
+    end
+
   end
 
   def save_data
     create_if_not_found
-
-    f = File.open("library_book.txt","w")
-    @books.each{|book|  f.puts "#{book.title}% #{book.author} " }
-    f.close
-    e = File.open("library_order.txt","w")
-    @orders.each{|order| e.puts "#{order.book}% #{order.reader} "}
-    e.close
-    c = File.open("library_reader.txt","w")
-    @readers.each{|reader| c.puts "#{reader.name}% #{reader.email}% #{reader.city}% #{reader.street}% #{reader.house}"}
-    c.close
-    h = File.open("library_author.txt","w")
-    @authors.each{|author| f.puts "#{author.name}% #{author.biography} "}
-    h.close
-
+    ["library_book.txt","library_order.txt","library_reader.txt","library_author.txt"].each do |file_name|
+      f = File.open(file_name,"w")
+      case file_name
+        when "library_book.txt"
+          @books.each{|book|  f.puts "#{book.title}% #{book.author} " }
+        when "library_order.txt"
+          @orders.each{|order| f.puts "#{order.book}% #{order.reader} "}
+        when "library_reader.txt"
+          @readers.each{|reader| f.puts "#{reader.name}% #{reader.email}% #{reader.city}% #{reader.street}% #{reader.house}"}
+        when "library_author.txt"
+          @authors.each{|author| f.puts "#{author.name}% #{author.biography} "}
+      end
+      f.close
+    end
   end
 
 
-  def add_book
-
-    file = File.readlines("library_book.txt")
-    file.map! { |f| f.chomp.split('%') }
-    file.each{|val| add Book.new(title:val[0],author:val[1])}
-
-  end
-
-  def add_reader
-
-    file = File.readlines("library_reader.txt")
-    file.map! { |f| f.chomp.split('%') }
-    file.each{|val| add Reader.new(name:val[0],email:val[1],city:val[2],street:val[3],house:val[4])}
-
-  end
 
 
-  def add_order
 
-    file = File.readlines("library_order.txt")
-    file.map! { |f| f.chomp.split('%') }
-    file.each{|val| add Order.new(book:val[0],reader:val[1])}
-  end
-
-  def add_author
-
-    file = File.readlines("library_author.txt")
-    file.map! { |f| f.chomp.split('%') }
-    file.each{|val| add Author.new(name:val[0],biography:val[1])}
-  end
-
-
-end
+ end
 end
